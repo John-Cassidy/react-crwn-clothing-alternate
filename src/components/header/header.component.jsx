@@ -1,8 +1,8 @@
 import './header.styles.scss';
 
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 
-import CartContext from '../../contexts/cart/cart.context';
+import { CartContext } from '../../providers/cart/cart.provider';
 import CartDropdown from '../cart-dropdown/cart-dropdown.component';
 import CartIcon from '../cart-icon/cart-icon.component';
 import CurrentUserContext from '../../contexts/current-user/current-user.context';
@@ -12,8 +12,8 @@ import { auth } from '../../firebase/firebase.utils';
 
 const Header = () => {
   const currentUser = useContext(CurrentUserContext);
-  const [hidden, setHidden] = useState(true);
-  const toggleHidden = () => setHidden(!hidden);
+  const { hidden } = useContext(CartContext);
+
   return (
     <div className='header'>
       <Link className='logo-container' to='/'>
@@ -35,14 +35,7 @@ const Header = () => {
             SIGN IN
           </Link>
         )}
-        <CartContext.Provider
-          value={{
-            hidden,
-            toggleHidden,
-          }}
-        >
-          <CartIcon />
-        </CartContext.Provider>
+        <CartIcon />
       </div>
       {hidden ? null : <CartDropdown />}
     </div>
